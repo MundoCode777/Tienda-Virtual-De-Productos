@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoGame - Iniciar Sesión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        /* Partículas de fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(0, 255, 255, 0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(0, 212, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(0, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(0, 212, 255, 0.3), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .container {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(0, 212, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 212, 255, 0.1); }
+            100% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 60px rgba(0, 212, 255, 0.3); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #007acc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: white;
+            box-shadow: 
+                0 0 30px rgba(0, 212, 255, 0.6),
+                0 0 60px rgba(0, 212, 255, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
+            position: relative;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 30px rgba(0, 212, 255, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 30px rgba(0, 212, 255, 0.6); }
+        }
+
+        .logo h1 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            background: linear-gradient(45deg, #fff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            color: rgba(0, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .form-toggle {
+            display: flex;
+            background: rgba(10, 10, 25, 0.8);
+            border-radius: 15px;
+            margin-bottom: 35px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: rgba(0, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            box-shadow: 
+                0 0 20px rgba(0, 212, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(10, 10, 30, 0.8);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 
+                0 0 0 3px rgba(0, 212, 255, 0.2),
+                0 0 20px rgba(0, 212, 255, 0.3);
+            background: rgba(15, 15, 40, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(0, 255, 255, 0.6);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(0, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #00d4ff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #007acc);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
+            box-shadow: 
+                0 8px 20px rgba(0, 212, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 30px rgba(0, 212, 255, 0.4),
+                0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #db4437, #c23321);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 
+                0 8px 20px rgba(219, 68, 55, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .google-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 30px rgba(219, 68, 55, 0.4),
+                0 0 30px rgba(219, 68, 55, 0.3);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            color: rgba(0, 255, 255, 0.6);
+            position: relative;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+        }
+
+        .divider span {
+            background: rgba(15, 15, 35, 0.95);
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: rgba(0, 255, 255, 0.8);
+        }
+
+        .footer-text a {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00d4ff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 30px;
+                margin: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 28px;
+            }
+            
+            .logo-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+            }
+        }
+
+        /* Custom SweetAlert2 styling */
+        .swal2-popup {
+            background: rgba(15, 15, 35, 0.95) !important;
+            border: 2px solid rgba(0, 255, 255, 0.3) !important;
+            border-radius: 20px !important;
+            backdrop-filter: blur(20px) !important;
+        }
+
+        .swal2-title {
+            color: white !important;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5) !important;
+        }
+
+        .swal2-content {
+            color: rgba(0, 255, 255, 0.9) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">🎮</div>
+            <h1>VideoGame</h1>
+            <p>Tu tienda de PS4 y PS5</p>
+        </div>
+
+        <div class="form-toggle">
+            <button class="toggle-btn active" id="loginToggle">Iniciar Sesión</button>
+            <button class="toggle-btn" id="registerToggle">Registrarse</button>
+        </div>
+
+        <!-- Formulario de Login -->
+        <form id="loginForm" class="form">
+            <div class="form-group">
+                <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁️</button>
+            </div>
+            <button type="submit" class="submit-btn" id="loginBtn">Ingresar</button>
+            <div class="divider"><span>o</span></div>
+            <button type="button" class="google-btn" id="googleLoginBtn">
+                <span>🔍</span> Ingresar con Google
+            </button>
+        </form>
+
+        <!-- Formulario de Registro -->
+        <form id="registerForm" class="form hidden">
+            <div class="form-group">
+                <input type="text" id="registerName" placeholder="Nombre completo" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="registerEmail" placeholder="Correo electrónico" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="registerPassword" placeholder="Contraseña (mín. 6 caracteres)" required>
+                <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">👁️</button>
+            </div>
+            <div class="form-group">
+                <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
+                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+            </div>
+            <button type="submit" class="submit-btn" id="registerBtn">Registrarse</button>
+            <div class="divider"><span>o</span></div>
+            <button type="button" class="google-btn" id="googleRegisterBtn">
+                <span>🔍</span> Registrarse con Google
+            </button>
+        </form>
+
+        <div class="footer-text">
+            <span id="footerText">¿No tienes cuenta? <a href="#" id="footerLink">Regístrate aquí</a></span>
+        </div>
+    </div>
+
+    <!-- Firebase y SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            updateProfile,
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
+
+        // Firebase configuration - CONFIGURACIÓN QUE FUNCIONA
+        const firebaseConfig = {
+            apiKey: "AIzaSyAAONTVcHjM2U3O4zXklahSAwinLVDKI5w",
+            authDomain: "prediciones-de-maiz-ee22c.firebaseapp.com",
+            projectId: "prediciones-de-maiz-ee22c",
+            storageBucket: "prediciones-de-maiz-ee22c.firebasestorage.app",
+            messagingSenderId: "985007785097",
+            appId: "1:985007785097:web:754af3b5611b4476e33258",
+            measurementId: "G-BHF799DL1B"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // Variables globales
+        let currentForm = 'login';
+
+        // Elementos del DOM
+        const loginToggle = document.getElementById('loginToggle');
+        const registerToggle = document.getElementById('registerToggle');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const googleRegisterBtn = document.getElementById('googleRegisterBtn');
+        const footerText = document.getElementById('footerText');
+        const footerLink = document.getElementById('footerLink');
+
+        // Event listeners
+        loginToggle.addEventListener('click', function() { switchForm('login'); });
+        registerToggle.addEventListener('click', function() { switchForm('register'); });
+        footerLink.addEventListener('click', function(e) { 
+            e.preventDefault(); 
+            switchForm(currentForm === 'login' ? 'register' : 'login'); 
+        });
+        loginForm.addEventListener('submit', handleLogin);
+        registerForm.addEventListener('submit', handleRegister);
+        googleLoginBtn.addEventListener('click', handleGoogleAuth);
+        googleRegisterBtn.addEventListener('click', handleGoogleAuth);
+
+        // Funciones
+        function switchForm(formType) {
+            currentForm = formType;
+            
+            if (formType === 'login') {
+                loginToggle.classList.add('active');
+                registerToggle.classList.remove('active');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                footerText.innerHTML = '¿No tienes cuenta? <a href="#" id="footerLink">Regístrate aquí</a>';
+            } else {
+                registerToggle.classList.add('active');
+                loginToggle.classList.remove('active');
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                footerText.innerHTML = '¿Ya tienes cuenta? <a href="#" id="footerLink">Inicia sesión aquí</a>';
+            }
+            
+            // Re-attach event listener to new footer link
+            document.getElementById('footerLink').addEventListener('click', function(e) { 
+                e.preventDefault(); 
+                switchForm(currentForm === 'login' ? 'register' : 'login'); 
+            });
+        }
+
+        window.togglePassword = function(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️';
+            }
+        }
+
+        function setLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                const originalText = button.textContent;
+                button.innerHTML = '<span class="loading"></span>Procesando...';
+                button.dataset.originalText = originalText;
+            } else {
+                button.disabled = false;
+                button.innerHTML = button.dataset.originalText || 'Ingresar';
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            setLoading(loginBtn, true);
+            
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                await Swal.fire({
+                    icon: 'success',
+                    title: '¡Bienvenido!',
+                    text: 'Inicio de sesión exitoso',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+                
+                // Redirección a la tienda
+                window.location.href = "Catalogo.html";
+                
+            } catch (error) {
+                console.error('Error en login:', error);
+                let errorMessage = 'Error al iniciar sesión';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No existe una cuenta con este correo';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Contraseña incorrecta';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Correo electrónico inválido';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'Esta cuenta ha sido deshabilitada';
+                        break;
+                    default:
+                        errorMessage = error.message;
+                }
+                
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+            } finally {
+                setLoading(loginBtn, false);
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validaciones
+            if (password !== confirmPassword) {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Las contraseñas no coinciden',
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+                return;
+            }
+            
+            if (password.length < 6) {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La contraseña debe tener al menos 6 caracteres',
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+                return;
+            }
+            
+            setLoading(registerBtn, true);
+            
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Actualizar el perfil con el nombre
+                await updateProfile(user, {
+                    displayName: name
+                });
+                
+                await Swal.fire({
+                    icon: 'success',
+                    title: '¡Registro exitoso!',
+                    text: 'Bienvenido ' + name,
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+                
+                // Redirección a la tienda
+                window.location.href = ".Catalogo.html";
+                
+            } catch (error) {
+                console.error('Error en registro:', error);
+                let errorMessage = 'Error al registrarse';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Ya existe una cuenta con este correo';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Correo electrónico inválido';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'La contraseña es muy débil';
+                        break;
+                    default:
+                        errorMessage = error.message;
+                }
+                
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+            } finally {
+                setLoading(registerBtn, false);
+            }
+        }
+
+        async function handleGoogleAuth() {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                await Swal.fire({
+                    icon: 'success',
+                    title: '¡Bienvenido!',
+                    text: 'Has iniciado sesión con Google',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+                
+                // Redirección a la tienda
+                window.location.href = "Catalogo.html";
+                
+            } catch (error) {
+                console.error('Error con Google Auth:', error);
+                let errorMessage = 'Error al autenticar con Google';
+                
+                switch (error.code) {
+                    case 'auth/popup-closed-by-user':
+                        errorMessage = 'Autenticación cancelada por el usuario';
+                        break;
+                    case 'auth/popup-blocked':
+                        errorMessage = 'Popup bloqueado. Permite popups y intenta de nuevo';
+                        break;
+                    default:
+                        errorMessage = error.message;
+                }
+                
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+            }
+        }
+
+        // Verificar si hay un usuario autenticado al cargar la página
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('Usuario autenticado:', user);
+            } else {
+                console.log('No hay usuario autenticado');
+            }
+        });
+
+        // Función global para cerrar sesión
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Sesión cerrada',
+                    text: 'Has cerrado sesión exitosamente',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(15, 15, 35, 0.95)',
+                    color: 'white'
+                });
+                window.location.href = ".login.html"; // Redirigir al login
+            } catch (error) {
+                console.error('Error al cerrar sesión:', error);
+            }
+        }
+    </script>
+</body>
+</html>
