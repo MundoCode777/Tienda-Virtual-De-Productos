@@ -600,7 +600,7 @@
         let cart = [];
         let currentFilter = 'all';
 
-        // Productos de la tienda con imágenes reales
+        // Productos de la tienda con imágenes de CDN
         const products = [
             {
                 id: 1,
@@ -608,7 +608,7 @@
                 price: 69.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202107/3100/HO8vkO9pfXhwbHi5WHECQJdN.png"
+                image: "Ps5 Img/Horizon.png"
             },
             {
                 id: 2,
@@ -616,7 +616,7 @@
                 price: 59.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png"
+                image: "Ps5 Img/GodOFWar.png"
             },
             {
                 id: 3,
@@ -624,7 +624,7 @@
                 price: 69.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202306/1219/60ebb12b4fd579c71e21dc54537fd87e0a3e8bb2f464b89b.png"
+                image: "Ps5 Img/Spiderman.png"
             },
             {
                 id: 4,
@@ -632,7 +632,7 @@
                 price: 49.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202206/0720/dR4hW0zNACONEcILhLdnLxKJ.png"
+                image: "Ps5 Img/TheLastOfUs.png"
             },
             {
                 id: 5,
@@ -640,7 +640,7 @@
                 price: 39.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202101/2921/dqD1S3HbLR6JRhg3NvCvN0Dp.png"
+                image: "Ps5 Img/RatChet.png"
             },
             {
                 id: 6,
@@ -648,7 +648,7 @@
                 price: 59.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202110/2618/phvVT0qZfcRms5qDAk0SI3CM.png"
+                image: "Ps5 Img/GranTurismo.png"
             },
             {
                 id: 7,
@@ -656,7 +656,7 @@
                 price: 49.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202008/1020/PRfYtTz2QHBYu7HCK2KjRq11.png"
+                image: "Ps5 Img/DemonsSouls.png"
             },
             {
                 id: 8,
@@ -664,7 +664,7 @@
                 price: 39.99,
                 console: "PS5",
                 category: "ps5",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202011/1621/cVhGT9P3CS3H3c2CjdmcaEsI.png"
+                image: "Ps5 Img/Returnal.png"
             },
             {
                 id: 9,
@@ -672,7 +672,7 @@
                 price: 34.99,
                 console: "PS4",
                 category: "ps4",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202010/0222/niLqVkw5fBbtcpuF2FQBXwZq.png"
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4jel.webp"
             },
             {
                 id: 10,
@@ -680,7 +680,7 @@
                 price: 29.99,
                 console: "PS4",
                 category: "ps4",
-                image: "https://image.api.playstation.com/vulcan/ap/rnd/202010/1219/cVhGT9P3CS3H3c2CjdmcaEsI.png"
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1wyy.webp"
             },
             {
                 id: 11,
@@ -688,7 +688,7 @@
                 price: 19.99,
                 console: "PS4",
                 category: "ps4",
-                image: "https://image.api.playstation.com/vulcan/img/rnd/202010/2618/Y02ljdrcmNXau9YdS3gY0eOx.png"
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.webp"
             },
             {
                 id: 12,
@@ -696,55 +696,87 @@
                 price: 24.99,
                 console: "PS4",
                 category: "ps4",
-                image: "https://image.api.playstation.com/vulcan/img/rnd/202010/2618/aKFtYDNJE3xqwPQ3pDIlFDy4.png"
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vcb.webp"
             },
             {
                 id: 13,
+                name: "Cyberpunk 2077",
+                price: 39.99,
+                console: "PS5",
+                category: "ps5",
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rpf.webp"
+            },
+            {
+                id: 14,
+                name: "Elden Ring",
+                price: 59.99,
+                console: "PS5",
+                category: "ps5",
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4jj8.webp"
+            },
+            {
+                id: 15,
+                name: "Resident Evil 4",
+                price: 49.99,
+                console: "PS5",
+                category: "ps5",
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6au4.webp"
+            },
+            {
+                id: 16,
+                name: "Final Fantasy XVI",
+                price: 69.99,
+                console: "PS5",
+                category: "ps5",
+                image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5s0y.webp"
+            },
+            {
+                id: 17,
                 name: "PlayStation 5 Console",
                 price: 499.99,
                 console: "Consola",
                 category: "consolas",
-                image: "https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$"
+                image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=400&h=300&fit=crop&crop=center"
             },
             {
-                id: 14,
+                id: 18,
                 name: "PlayStation 4 Pro",
                 price: 299.99,
                 console: "Consola",
                 category: "consolas",
-                image: "https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21?$facebook$"
+                image: "https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?w=400&h=300&fit=crop&crop=center"
             },
             {
-                id: 15,
+                id: 19,
                 name: "DualSense Controller",
                 price: 69.99,
                 console: "PS5",
                 category: "accesorios",
-                image: "https://gmedia.playstation.com/is/image/SIEPDC/dualsense-controller-white-accessory-front-image-block-01-en-29oct20?$facebook$"
+                image: "https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=400&h=300&fit=crop&crop=center"
             },
             {
-                id: 16,
+                id: 20,
                 name: "PlayStation VR2",
                 price: 549.99,
                 console: "PS5",
                 category: "accesorios",
-                image: "https://gmedia.playstation.com/is/image/SIEPDC/psvr2-product-thumbnail-01-en-15feb23?$facebook$"
+                image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=400&h=300&fit=crop&crop=center"
             },
             {
-                id: 17,
+                id: 21,
                 name: "Pulse 3D Wireless Headset",
                 price: 99.99,
                 console: "PS5",
                 category: "accesorios",
-                image: "https://gmedia.playstation.com/is/image/SIEPDC/pulse-3d-headset-thumbnail-01-en-15oct20?$facebook$"
+                image: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=300&fit=crop&crop=center"
             },
             {
-                id: 18,
+                id: 22,
                 name: "DualShock 4 Controller",
                 price: 59.99,
                 console: "PS4",
                 category: "accesorios",
-                image: "https://gmedia.playstation.com/is/image/SIEPDC/dualshock4-controller-black-01-en-14sep21?$facebook$"
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=300&fit=crop&crop=center"
             }
         ];
 
@@ -754,7 +786,7 @@
                 document.getElementById('userName').textContent = user.displayName || user.email;
                 loadProducts();
             } else {
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
             }
         });
 
@@ -884,19 +916,13 @@
                 return;
             }
 
-            Swal.fire({
-                icon: 'success',
-                title: '¡Compra realizada!',
-                text: `Total: $${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}`,
-                background: 'rgba(15, 15, 35, 0.95)',
-                color: 'white'
-            }).then(() => {
-                cart = [];
-                updateCartUI();
-                toggleCart();
-            });
+            // Guardar carrito en localStorage para la página de checkout
+            localStorage.setItem('checkoutCart', JSON.stringify(cart));
+            
+            // Redirigir a la página de checkout
+            window.location.href = 'checkout.html';
         }
-        
+
         // Aquí la función logout modificada para confirmar antes de cerrar sesión
         window.logout = function() {
             Swal.fire({
@@ -922,7 +948,7 @@
                             background: 'rgba(15, 15, 35, 0.95)',
                             color: 'white'
                         }).then(() => {
-                            window.location.href = 'login.html';
+                            window.location.href = './login.html';
                         });
                     } catch (error) {
                         console.error('Error al cerrar sesión:', error);
