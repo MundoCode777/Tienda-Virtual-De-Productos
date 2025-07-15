@@ -525,7 +525,7 @@
             <div class="nav-actions">
                 <div class="user-info">
                     <span>Bienvenido, <span id="userName">Usuario</span></span>
-                    <button class="logout-btn" onclick="logout()">Salir</button>
+                    <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
                 </div>
                 <button class="cart-btn" onclick="toggleCart()">
                     🛒 Carrito <span class="cart-count" id="cartCount">0</span>
@@ -754,7 +754,7 @@
                 document.getElementById('userName').textContent = user.displayName || user.email;
                 loadProducts();
             } else {
-                window.location.href = 'index.html';
+                window.location.href = 'login.html';
             }
         });
 
@@ -896,24 +896,46 @@
                 toggleCart();
             });
         }
-
-        window.logout = async function() {
-            try {
-                await signOut(auth);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sesión cerrada',
-                    text: 'Has cerrado sesión exitosamente',
-                    timer: 1500,
-                    showConfirmButton: false,
-                    background: 'rgba(15, 15, 35, 0.95)',
-                    color: 'white'
-                }).then(() => {
-                    window.location.href = 'index.html';
-                });
-            } catch (error) {
-                console.error('Error al cerrar sesión:', error);
-            }
+        
+        // Aquí la función logout modificada para confirmar antes de cerrar sesión
+        window.logout = function() {
+            Swal.fire({
+                title: '¿Estás seguro que quieres cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar',
+                background: 'rgba(15, 15, 35, 0.95)',
+                color: 'white',
+                confirmButtonColor: '#00d4ff',
+                cancelButtonColor: '#ff4757',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await signOut(auth);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sesión cerrada',
+                            text: 'Has cerrado sesión exitosamente',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(15, 15, 35, 0.95)',
+                            color: 'white'
+                        }).then(() => {
+                            window.location.href = 'login.html';
+                        });
+                    } catch (error) {
+                        console.error('Error al cerrar sesión:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se pudo cerrar la sesión',
+                            background: 'rgba(15, 15, 35, 0.95)',
+                            color: 'white'
+                        });
+                    }
+                }
+            });
         }
     </script>
 </body>
