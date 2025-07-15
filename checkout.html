@@ -543,232 +543,239 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
+    <!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAAONTVcHjM2U3O4zXklahSAwinLVDKI5w",
-            authDomain: "prediciones-de-maiz-ee22c.firebaseapp.com",
-            projectId: "prediciones-de-maiz-ee22c",
-            storageBucket: "prediciones-de-maiz-ee22c.firebasestorage.app",
-            messagingSenderId: "985007785097",
-            appId: "1:985007785097:web:754af3b5611b4476e33258",
-            measurementId: "G-BHF799DL1B"
-        };
+<script type="module">
+/* ─────────── Firebase ─────────── */
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+const firebaseConfig = {
+  apiKey:            "AIzaSyAAONTVcHjM2U3O4zXklahSAwinLVDKI5w",
+  authDomain:        "prediciones-de-maiz-ee22c.firebaseapp.com",
+  projectId:         "prediciones-de-maiz-ee22c",
+  storageBucket:     "prediciones-de-maiz-ee22c.firebasestorage.app",
+  messagingSenderId: "985007785097",
+  appId:             "1:985007785097:web:754af3b5611b4476e33258",
+  measurementId:     "G-BHF799DL1B"
+};
 
-        let cartData = [];
-        let selectedPaymentMethod = null;
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('email').value = user.email || '';
-                document.getElementById('fullName').value = user.displayName || '';
-                loadCartData();
-            } else {
-                window.location.href = 'index.html';
-            }
-        });
+/* ─────────── Variables ─────────── */
+let cartData = [];
+let selectedPaymentMethod = null;
 
-        function loadCartData() {
-            const savedCart = localStorage.getItem('checkoutCart');
-            if (savedCart) {
-                cartData = JSON.parse(savedCart);
-                displayCartItems();
-                calculateTotals();
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Carrito vacío',
-                    text: 'No hay productos en el carrito',
-                    background: 'rgba(15, 15, 35, 0.95)',
-                    color: 'white'
-                }).then(() => {
-                    window.location.href = 'catalogo.html';
-                });
-            }
-        }
+/* ─────────── Autenticación ─────────── */
+onAuthStateChanged(auth, user => {
+  if (user) {
+    document.getElementById('email').value    = user.email       || '';
+    document.getElementById('fullName').value = user.displayName || '';
+    loadCartData();
+  } else {
+    window.location.href = 'index.html';
+  }
+});
 
-        function displayCartItems() {
-            const container = document.getElementById('cartItems');
-            container.innerHTML = cartData.map(item => `
-                <div class="cart-item">
-                    <img src="${item.image}" alt="${item.name}" class="item-image" 
-                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect width=%2260%22 height=%2260%22 fill=%22%23333%22/><text x=%2250%%22 y=%2250%%22 font-size=%2212%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22>🎮</text></svg>'">
-                    <div class="item-info">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-console">${item.console}</div>
-                    </div>
-                    <input type="number" class="item-quantity" value="${item.quantity}" min="1" 
-                           onchange="updateQuantity(${item.id}, this.value)">
-                    <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
-                </div>
-            `).join('');
-        }
+/* ─────────── Carrito ─────────── */
+function loadCartData(){
+  const saved = localStorage.getItem('checkoutCart');
+  if(saved){
+    cartData = JSON.parse(saved);
+    displayCartItems();
+    calculateTotals();
+  }else{
+    Swal.fire({
+      icon:'warning', title:'Carrito vacío', text:'No hay productos en el carrito',
+      background:'rgba(15,15,35,.95)', color:'white'
+    }).then(()=>window.location.href='catalogo.html');
+  }
+}
 
-        window.updateQuantity = function(productId, newQuantity) {
-            const item = cartData.find(item => item.id === productId);
-            if (item) {
-                item.quantity = parseInt(newQuantity);
-                localStorage.setItem('checkoutCart', JSON.stringify(cartData));
-                displayCartItems();
-                calculateTotals();
-            }
-        }
+function displayCartItems(){
+  const c = document.getElementById('cartItems');
+  c.innerHTML = cartData.map(i=>`
+    <div class="cart-item">
+      <img src="${i.image}" alt="${i.name}" class="item-image"
+           onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect width=%2260%22 height=%2260%22 fill=%22%23333%22/><text x=%2250%%22 y=%2250%%22 font-size=%2212%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22>🎮</text></svg>'">
+      <div class="item-info">
+        <div class="item-name">${i.name}</div>
+        <div class="item-console">${i.console}</div>
+      </div>
+      <input type="number" class="item-quantity" value="${i.quantity}" min="1"
+             onchange="updateQuantity(${i.id}, this.value)">
+      <div class="item-price">$${(i.price*i.quantity).toFixed(2)}</div>
+    </div>`).join('');
+}
 
-        function calculateTotals() {
-            const subtotal = cartData.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal > 100 ? 0 : 9.99;
-            const taxes = subtotal * 0.16;
-            const total = subtotal + shipping + taxes;
+window.updateQuantity = (id, qty)=>{
+  const item = cartData.find(i=>i.id===id);
+  if(item){
+    item.quantity = Math.max(1,parseInt(qty));
+    localStorage.setItem('checkoutCart', JSON.stringify(cartData)); // mantén sincronizado
+    displayCartItems();
+    calculateTotals();
+  }
+};
 
-            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-            document.getElementById('shipping').textContent = shipping === 0 ? 'GRATIS' : `$${shipping.toFixed(2)}`;
-            document.getElementById('taxes').textContent = `$${taxes.toFixed(2)}`;
-            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
-        }
+function calculateTotals(){
+  const sub = cartData.reduce((s,i)=>s+i.price*i.quantity,0);
+  const ship= sub>100?0:9.99;
+  const tax = sub*0.16;
+  const tot = sub+ship+tax;
+  document.getElementById('subtotal').textContent = `$${sub.toFixed(2)}`;
+  document.getElementById('shipping').textContent = ship?`$${ship.toFixed(2)}`:'GRATIS';
+  document.getElementById('taxes').textContent    = `$${tax.toFixed(2)}`;
+  document.getElementById('total').textContent    = `$${tot.toFixed(2)}`;
+}
 
-        document.querySelectorAll('.payment-method').forEach(method => {
-            method.addEventListener('click', function() {
-                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedPaymentMethod = this.dataset.method;
-                
-                const cardDetails = document.getElementById('cardDetails');
-                if (selectedPaymentMethod === 'card') {
-                    cardDetails.classList.add('show');
-                } else {
-                    cardDetails.classList.remove('show');
-                }
-            });
-        });
+/* ─────────── Método de pago ─────────── */
+document.querySelectorAll('.payment-method').forEach(m=>{
+  m.addEventListener('click',function(){
+    document.querySelectorAll('.payment-method').forEach(x=>x.classList.remove('selected'));
+    this.classList.add('selected');
+    selectedPaymentMethod = this.dataset.method;
+    document.getElementById('cardDetails').classList
+      .toggle('show', selectedPaymentMethod==='card');
+  });
+});
 
-        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
-            e.target.value = formattedValue;
-        });
+/* formateo inputs de tarjeta */
+document.getElementById('cardNumber')?.addEventListener('input',e=>{
+  let v=e.target.value.replace(/\D/g,'');
+  e.target.value=v.replace(/(\d{4})(?=\d)/g,'$1 ');
+});
+document.getElementById('expiryDate')?.addEventListener('input',e=>{
+  let v=e.target.value.replace(/\D/g,'');
+  if(v.length>=2) v=v.slice(0,2)+'/'+v.slice(2,4);
+  e.target.value=v;
+});
+document.getElementById('cvv')?.addEventListener('input',e=>{
+  e.target.value=e.target.value.replace(/\D/g,'');
+});
 
-        document.getElementById('expiryDate')?.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2, 4);
-            }
-            e.target.value = value;
-        });
+/* ─────────── Procesar pedido ─────────── */
+window.processOrder = async ()=>{
+  const form = document.getElementById('checkoutForm');
+  const btn  = document.getElementById('placeOrderBtn');
 
-        document.getElementById('cvv')?.addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
-        });
+  if(!form.checkValidity()){ form.reportValidity(); return; }
+  if(!selectedPaymentMethod){
+    Swal.fire({
+      icon:'warning', title:'Método de pago requerido',
+      text:'Por favor selecciona un método de pago',
+      background:'rgba(15,15,35,.95)', color:'white'
+    }); return;
+  }
+  if(selectedPaymentMethod==='card'){
+    const fields=['cardNumber','expiryDate','cvv','cardName']
+      .map(id=>document.getElementById(id).value.trim());
+    if(fields.some(f=>!f)){
+      Swal.fire({
+        icon:'warning', title:'Datos de tarjeta incompletos',
+        text:'Por favor completa todos los campos de la tarjeta',
+        background:'rgba(15,15,35,.95)', color:'white'
+      }); return;
+    }
+  }
 
-        window.processOrder = async function() {
-            const form = document.getElementById('checkoutForm');
-            const placeOrderBtn = document.getElementById('placeOrderBtn');
+  btn.disabled=true; btn.innerHTML='<span class="loading"></span>Procesando pedido…';
 
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
+  try{
+    await new Promise(r=>setTimeout(r,3000)); // simular pasarela
 
-            if (!selectedPaymentMethod) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Método de pago requerido',
-                    text: 'Por favor selecciona un método de pago',
-                    background: 'rgba(15, 15, 35, 0.95)',
-                    color: 'white'
-                });
-                return;
-            }
+    const sub = cartData.reduce((s,i)=>s+i.price*i.quantity,0);
+    const ship= sub>100?0:9.99;
+    const tax = sub*0.16;
+    const tot = sub+ship+tax;
+    const orderNumber='VG'+Date.now().toString().slice(-8);
 
-            if (selectedPaymentMethod === 'card') {
-                const cardNumber = document.getElementById('cardNumber').value;
-                const expiryDate = document.getElementById('expiryDate').value;
-                const cvv = document.getElementById('cvv').value;
-                const cardName = document.getElementById('cardName').value;
+    /* -------- aviso de éxito -------- */
+    await Swal.fire({
+      icon:'success', title:'¡Pedido realizado con éxito!',
+      html:`
+        <div style="text-align:left;margin:20px 0;">
+          <p><strong>Número de orden:</strong> ${orderNumber}</p>
+          <p><strong>Total pagado:</strong> $${tot.toFixed(2)}</p>
+          <p><strong>Método de pago:</strong> ${getPaymentMethodName(selectedPaymentMethod)}</p>
+          <br><p>Recibirás un email de confirmación en breve.</p>
+          <p>Tu pedido será enviado en 2‑3 días hábiles.</p>
+        </div>`,
+      background:'rgba(15,15,35,.95)', color:'white',
+      confirmButtonColor:'#00d4ff', confirmButtonText:'Calificar experiencia'
+    });
 
-                if (!cardNumber || !expiryDate || !cvv || !cardName) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Datos de tarjeta incompletos',
-                        text: 'Por favor completa todos los campos de la tarjeta',
-                        background: 'rgba(15, 15, 35, 0.95)',
-                        color: 'white'
-                    });
-                    return;
-                }
-            }
+    /* -------- pedir valoración -------- */
+    await askForRating();
 
-            placeOrderBtn.disabled = true;
-            placeOrderBtn.innerHTML = '<span class="loading"></span>Procesando pedido...';
+    /* limpiar carrito y redirigir */
+    localStorage.removeItem('checkoutCart');
+    window.location.href='catalogo.html';
 
-            try {
-                await new Promise(resolve => setTimeout(resolve, 3000));
+  }catch(err){
+    console.error('Error al procesar el pedido:',err);
+    Swal.fire({
+      icon:'error', title:'Error al procesar el pedido',
+      text:'Hubo un problema. Por favor intenta de nuevo.',
+      background:'rgba(15,15,35,.95)', color:'white'
+    });
+  }finally{
+    btn.disabled=false; btn.innerHTML='Realizar Pedido';
+  }
+};
 
-                const subtotal = cartData.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const shipping = subtotal > 100 ? 0 : 9.99;
-                const taxes = subtotal * 0.16;
-                const total = subtotal + shipping + taxes;
+/* ─────────── Diálogo de estrellas ─────────── */
+async function askForRating(){
+  const {isConfirmed, value} = await Swal.fire({
+    title:'Califica tu experiencia',
+    html:`
+      <style>
+        .stars input{display:none}
+        .stars label{font-size:2.3rem;cursor:pointer}
+        .stars label:hover,
+        .stars input:checked ~ label{color:#ffc107}
+      </style>
+      <div class="stars">
+        <input id="s5" type="radio" name="r" value="5"><label for="s5">★</label>
+        <input id="s4" type="radio" name="r" value="4"><label for="s4">★</label>
+        <input id="s3" type="radio" name="r" value="3"><label for="s3">★</label>
+        <input id="s2" type="radio" name="r" value="2"><label for="s2">★</label>
+        <input id="s1" type="radio" name="r" value="1"><label for="s1">★</label>
+      </div>`,
+    confirmButtonText:'Enviar',
+    preConfirm:()=>{
+      const sel=document.querySelector('input[name=r]:checked');
+      if(!sel) Swal.showValidationMessage('Selecciona una calificación');
+      return sel?.value;
+    },
+    background:'rgba(15,15,35,.95)', color:'white'
+  });
 
-                const orderNumber = 'VG' + Date.now().toString().substr(-8);
+  if(isConfirmed){
+    const ratings = JSON.parse(localStorage.getItem('ratings')||'[]');
+    ratings.push({date:Date.now(), stars:+value});
+    localStorage.setItem('ratings', JSON.stringify(ratings));
 
-                localStorage.removeItem('checkoutCart');
+    await Swal.fire({
+      icon:'success', title:'¡Gracias por tu opinión!',
+      timer:1500, showConfirmButton:false,
+      background:'rgba(15,15,35,.95)', color:'white'
+    });
+  }
+}
 
-                await Swal.fire({
-                    icon: 'success',
-                    title: '¡Pedido realizado con éxito!',
-                    html: `
-                        <div style="text-align: left; margin: 20px 0;">
-                            <p><strong>Número de orden:</strong> ${orderNumber}</p>
-                            <p><strong>Total pagado:</strong> $${total.toFixed(2)}</p>
-                            <p><strong>Método de pago:</strong> ${getPaymentMethodName(selectedPaymentMethod)}</p>
-                            <br>
-                            <p>Recibirás un email de confirmación en breve.</p>
-                            <p>Tu pedido será enviado en 2-3 días hábiles.</p>
-                        </div>
-                    `,
-                    background: 'rgba(15, 15, 35, 0.95)',
-                    color: 'white',
-                    confirmButtonColor: '#00d4ff',
-                    confirmButtonText: 'Continuar comprando'
-                });
+/* ─────────── Utilidades ─────────── */
+function getPaymentMethodName(m){
+  return {card:'Tarjeta de Crédito/Débito', paypal:'PayPal', crypto:'Criptomonedas'}[m]||m;
+}
 
-                window.location.href = 'catalogo.html';
+/* auto‑seleccionar tarjeta por defecto al cargar */
+window.addEventListener('load', ()=>{
+  document.querySelector('[data-method="card"]')?.click();
+});
+</script>
 
-            } catch (error) {
-                console.error('Error al procesar el pedido:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al procesar el pedido',
-                    text: 'Hubo un problema al procesar tu pedido. Por favor intenta de nuevo.',
-                    background: 'rgba(15, 15, 35, 0.95)',
-                    color: 'white'
-                });
-            } finally {
-                placeOrderBtn.disabled = false;
-                placeOrderBtn.innerHTML = 'Realizar Pedido';
-            }
-        }
-
-        function getPaymentMethodName(method) {
-            const methods = {
-                card: 'Tarjeta de Crédito/Débito',
-                paypal: 'PayPal',
-                crypto: 'Criptomonedas'
-            };
-            return methods[method] || method;
-        }
-
-        window.addEventListener('load', function() {
-            const cardMethod = document.querySelector('[data-method="card"]');
-            if (cardMethod) {
-                cardMethod.click();
-            }
-        });
-    </script>
 </body>
 </html>
